@@ -33,11 +33,21 @@ except Enter.
 #### Add 3 users: harry, natasha, tom.
 The requirements: The Additional group of the two users: harry, Natasha is the admin group. The user: tom's login shell should be non-interactive
 
+optional - if users should have password as password
+
 ```javascript
  RHEL 9.1 [root@server9 ~]#
  [root@server9 ~] #groupadd admin
  [root@server9 ~]#
- [root@server9 ~]# useradd -G admin harry [root@server9 ~]# useradd -G admin natasha
+ [root@server9 ~]# useradd -G admin harry
+ [root@server9 ~]# useradd -G admin natasha
  [root@server9 ~]#
  [root@server9 ~]# useradd -s /sbin/nologin tom [root@server9 ~]#
+
+ #optional
+ passwd sarah
+ password
+ (verify with sudo)
+ ...
+
  ```
