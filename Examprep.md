@@ -11,7 +11,7 @@ except Enter.
  # - press "e" letter to edit
  # - Remove any console= options from the line.
 
- # 1 Add init=/bin/bash
+ # 1 Add init=/bin/bash ...at the end of de line that begins with "Linux" in grub menu(ctrl e)
 
  # 2 crtl x
 
