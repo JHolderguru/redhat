@@ -65,7 +65,7 @@ optional - if users should have password as password
 
 # Set the permissions so that the owner and the group can read and write, # but others cannot access it
 
-4. sudo chmod 770 /home/admins  
+4. sudo chmod 2770 /home/admins  
 
 # Set the group ID on the directory so that files created within it
 # inherit the group of the directory (admin) rather than the group of the user that created the file
