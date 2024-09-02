@@ -73,3 +73,11 @@ optional - if users should have password as password
 5. sudo chmod g+s /home/admins
 
   ```
+
+  #### Configure a task: plan to run echo hello command at 14:23 every day.
+  ```javascript
+  # crontab -e 23 14 * * * echo "hello"
+  # systemctl restart crond
+  # crontab -l
+
+   ```
