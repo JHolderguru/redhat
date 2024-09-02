@@ -51,3 +51,25 @@ optional - if users should have password as password
  ...
 
  ```
+ #### Create a catalog under /home named admins. Its respective group is requested to be the admin group. The group users could read and write, while other users are not allowed to access it. The files created by users from the same group should also be the admin group.
+ ```javascript
+
+# Create the directory mkdir
+1. /home/admins  
+
+# Change the owner of the directory to root
+2. sudo chown root: /home/admins  
+
+# Change the group of the directory to admin sudo
+3. chgrp admin /home/admins  
+
+# Set the permissions so that the owner and the group can read and write, # but others cannot access it
+
+4. sudo chmod 770 /home/admins  
+
+# Set the group ID on the directory so that files created within it
+# inherit the group of the directory (admin) rather than the group of the user that created the file
+
+5. sudo chmod g+s /home/admins
+
+  ```
