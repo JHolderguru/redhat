@@ -88,6 +88,8 @@ running every minute for a user called harry
 # systemctl restart crond
 # crontab -l
 
+note:
+• Minutes  • Hours   • Day of month • Month • Day of week      • Command
 
    ```
 
