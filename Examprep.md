@@ -47,11 +47,11 @@ optional - if users should have password as password
  #optional
  passwd sarah
  password
- (verify with sudo)
- ...
+ (verify with sudo)...
 
  ```
  #### Create a catalog under /home named admins. Its respective group is requested to be the admin group. The group users could read and write, while other users are not allowed to access it. The files created by users from the same group should also be the admin group.
+
  ```javascript
 
 # Create the directory mkdir
@@ -74,11 +74,20 @@ optional - if users should have password as password
 
   ```
 
-  #### Configure a task: plan to run echo hello command at 14:23 every day.
+#### Configure a task: plan to run echo hello command at 14:23 every day.
   ```javascript
-  # crontab -e 23 14 * * * echo "hello"
+  # crontab -e
+  23 14 * * * echo "hello"
   # systemctl restart crond
   # crontab -l
+
+running every minute for a user called harry
+
+# crontab -e -u harry
+*/1 * * * * logger "ex200 example"
+# systemctl restart crond
+# crontab -l
+
 
    ```
 
@@ -92,7 +101,7 @@ optional - if users should have password as password
 
   [LocalRepo_BaseOs]
   name=local-RHEL
-  enabled=0
+  enabled=1
   gpgcheck=0
   baseurl=http://server.domain11.example.com/pub/ x86_64/Server/BaseOS/
 
@@ -105,3 +114,36 @@ optional - if users should have password as password
 #dnf clean all
 #dnf repolist
   ```
+
+##SELINUX
+
+#### In your system, http serice has some files in .]/var/www/html (do not change or alter files)solve the problem httpd service of your service having some issues, service is not running on port 82.
+
+```javascript
+systemctl status
+
+semanage port -l | grep 80
+semanage port -a -t http_port_t -p tcp 82
+semanage port -l | grep 80
+
+systemctl restart httpd
+systemctl enable httpd
+
+curlservera.example:82
+(you see the page)
+```
+#### SELinux must run in force mode.
+```javascript
+#vim /etc/selinux/config  
+    SELINUX=enforcing
+
+#getenforce
+SELINUX=enforcing
+```
+
+##Directories
+#### Create a catalog under /home named admins. Its respective group is requested to be the admin group. The group users could read and write, while other users are not allowed to access it. The files created by users from the same group should also be the admin group.
+
+```javascript
+mkdir -p /sha
+```
