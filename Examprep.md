@@ -81,3 +81,27 @@ optional - if users should have password as password
   # crontab -l
 
    ```
+
+#### Configure a default software repository for your system.One YUM has already provided to configure your system on http://server.domain11.example.com/pub/ x86_64/Server, and can be used normally.
+
+  ```javascript
+#dnf repolist
+#cd /etc/yum.repos.d
+#vi local-rhel9.repo
+
+
+  [LocalRepo_BaseOs]
+  name=local-RHEL
+  enabled=0
+  gpgcheck=0
+  baseurl=http://server.domain11.example.com/pub/ x86_64/Server/BaseOS/
+
+  [LocalRepo_AppStream]
+  name=LocalRepo_AppStream
+  enabled=1
+  gpgcheck=0
+  baseurl=http://server.domain11.example.com/pub/ x86_64/Server/AppStream/
+  ~  
+#dnf clean all
+#dnf repolist
+  ```
