@@ -1,5 +1,5 @@
 
-
+#62 - 14
 #### You are new System Administrator and from now you are going to handle the system and your main task is Network monitoring, Backup and Restore. But you don't know the root password. Change the root password to redhat and login in default Runlevel.
 
 ```javascript
@@ -143,9 +143,137 @@ curlservera.example:82
 SELINUX=enforcing
 ```
 
-##Directories
-#### Create a catalog under /home named admins. Its respective group is requested to be the admin group. The group users could read and write, while other users are not allowed to access it. The files created by users from the same group should also be the admin group.
+#72
+#### Who ever creates the files/directories on archive group owner should be automatically should be the same group owner of archive.
 
 ```javascript
-mkdir -p /sha
+#Create a Directory
+mkdir archive
+#Set the GUID  
+chmod g+s archive  
+
+Now any file or folder created in the archive will have the same owner:group permissions as parent folder, in this case same as archive folder
+```
+#110 - 8
+#### Create a backup file named /root/backup.tar.bz2, which contains the contents of /usr/local, bar must use the bzip2 compression.
+
+```javascript
+cd /usr/local
+
+tar -jcvf /root/backup.tar.bz2*
+
+Extract:
+mkdir /test
+
+tar -jxvf backup.tar.bz2 -C /test
+
+Now any file or folder created in the archive will have the same owner:group permissions as parent folder, in this case same as archive folder
+```
+
+#89 - 9
+##### Copy /etc/fstab document to /var/TMP directory. According the following requirements to configure the permission of this document.
+✑ The owner of this document must be root.
+✑ This document belongs to root group.
+✑ User mary have read and write permissions for this document.
+✑ User alice have read and execute permissions for this document.
+✑ Create user named bob, set uid is 1000. Bob have read and write permissions for this document.
+✑ All users has read permission for this document in the system.
+
+```javascript
+# cp /etc/fstab /var/tmp
+# chown root:root /var/tmp/fstab
+
+# useradd mary
+# useradd alice
+# useradd -u 1000 bob
+
+# setfacl -m u:mary:rw- /var/tmp/fstab
+# setfacl -m u:alice:r-x /var/tmp/fstab
+# setfacl -m u:bob:rw- /var/tmp/fstab
+# chmod o+r-- /var/tmp/fstab
+
+# getfact /var/tmp/fstab (to verify all permissions)
+# ls -ltr /var/tmp/fstab (to verify all permissions)
+
+```
+
+#33 - 10
+#### Configure NTP service, Synchronize the server time, NTP server: classroom.example.com
+
+```javascript
+vi /etc/chrony.conf
+  server classroom.example.com iburst
+systemctl restart chronyd
+systemctl enable chronyd
+
+chronyc sources -v
+```
+
+#37 - 11
+#### Find out files owned by jack, and copy them to directory /root/findresults
+
+```javascript
+find / -user jack -type f -exec cp -rf {} /root/findresults/ \;
+
+ls /root/findresults/
+or
+
+vi /opt/find-results.sh
+
+#!/bin/bash
+find / -user jack -type f -exec cp -rf {} /root/findresults/ \;
+
+wq!
+chmod 755 /opt/find-results
+```
+
+#38 - 12
+#### Find out all the columns that contains the string seismic within /usr/share/dict/words, then copy all these columns to /root/lines.tx in original order, there is no blank line, all columns must be the accurate copy of the original columns.
+
+```javascript
+grep seismic /usr/share/dict/words > /root/lines.txt
+
+or
+
+vi /opt/searchfile.sh
+#!/bin/bash
+grep seismic /usr/share/dict/words > /root/lines.txt
+
+chmod 755 searchfile.sh
+
+(optional is asked)
+cp /opt/searchfile.sh  /usr/local/bin
+```
+
+#21 - 13
+#### Add user: user1, set uid=2334 -
+#### Password: redhat -
+#### The user's login shell should be non-interactive..
+
+```javascript
+useradd -u 2334 -s /sbin/nologin user1
+
+passwd user1
+redhat
+
+```
+
+#20 - 13
+#### Add admin group and set gid=600 -
+
+```javascript
+sudo -i
+groupadd -g 600 admin
+cat /etc/group
+
+```
+
+#15 - 14
+#### Create a volume group, and set 16M as a extends. And divided a volume group containing 50 extends on volume group lv, make it as ext4 file system, and mounted automatically under /mnt/data.
+
+```javascript
+sudo -i
+groupadd -g 600 admin
+cat /etc/group
+
 ```
