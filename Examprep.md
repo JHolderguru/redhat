@@ -323,5 +323,7 @@ cat /etc/group
 #w (to write the changes)
 #lsblk -psf(to verify partition has been created)
 #mkfs.ext4 /dev/sd[]1 (to format the partition with ext4 file system)
-#mkdir /mnt/data (to create the mount point) #lsblk -psf (to show the UUID for the newly created file system) #echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab #systemctl daemon-reload #mount -a
+#mkdir /mnt/data (to create the mount point) #lsblk -psf (to show the UUID for the newly created file system)
+#echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab #systemctl daemon-reload
+#mount -a
 ```
