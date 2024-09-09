@@ -268,8 +268,28 @@ cat /etc/group
 
 ```
 
-#15 - 14
+#15/111- 15 -
 #### Create a volume group, and set 16M as a extends. And divided a volume group containing 50 extends on volume group lv, make it as ext4 file system, and mounted automatically under /mnt/data.
+```javascript
+#lsblk -pf (to check unused disks and partitions - let's say sda1 and sda2 are empty)
+#pvcreate /dev/sda1 /dev/sda2
+
+#vgcreate -s 16M datastore /dev/sda1 /dev/sda2
+
+#lvcreate -l 50 -n database datastore #mkfs.ext3 /dev/datastore/database
+#mkdir -p /mnt/database
+#lsblk -pf (to see the UUIDs) #echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab (use real UUID of "database" volume from previous step instead of XXX)
+
+#systemctl daemon-reload
+#mount -a
+```
+
+
+#### Create a new logical volume according to the following requirements:
+#### The logical volume is named database and belongs to the datastore volume group and has a size of 50 extents.
+#### Logical volumes in the datastore volume group should have an extent size of 16 MB.
+#### Format the new logical volume with a ext3 filesystem.
+#### The logical volume should be automatically mounted under /mnt/database at system boot time.
 
 ```javascript
 sudo -i
