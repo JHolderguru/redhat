@@ -327,3 +327,25 @@ cat /etc/group
 #echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab #systemctl daemon-reload
 #mount -a
 ```
+
+####7-16 Create a 2G swap partition which take effect automatically at boot-start, and it should not affect the original swap partition
+```javascript
+lsblk (to check partition)
+#fdisk /dev/sdb (to sda or sdb depending on the disk)
+#n (for new)
+#p (primary 1)
+#1 (default partition number)
+#press enter (first sector)
+#+2G (last sector)
+#t (to change type and select 82 for swap)
+#82 (code for hex)  
+#w (save changes)
+#partprobe /dev/sbd1 (to update partition table)  
+#lsblk(to confirm)
+#mkswap /dev/sbd1 (to generate UUID, we need UUID to make it permanent)
+#lsblk -f (to see file system, should be swap)
+#vi /etc/fstab (to make it permanent) #UUID=xxxxxxxxxxxx swap swap defaults 0 0  
+#mount -a
+#swapon -s  
+free -h #swap value must be increased by 2G
+```
