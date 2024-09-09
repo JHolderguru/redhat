@@ -271,17 +271,22 @@ cat /etc/group
 #15/111- 15 -
 #### Create a volume group, and set 16M as a extends. And divided a volume group containing 50 extends on volume group lv, make it as ext4 file system, and mounted automatically under /mnt/data.
 ```javascript
-#lsblk -pf (to check unused disks and partitions - let's say sda1 and sda2 are empty)
-#pvcreate /dev/sda1 /dev/sda2
+#vgcreate -s 16M vg01 /dev/sda1 /dev/sda2
 
-#vgcreate -s 16M datastore /dev/sda1 /dev/sda2
+#lvcreate -l 50 -n lv01 vg01
 
-#lvcreate -l 50 -n database datastore #mkfs.ext3 /dev/datastore/database
-#mkdir -p /mnt/database
-#lsblk -pf (to see the UUIDs) #echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab (use real UUID of "database" volume from previous step instead of XXX)
+#mkfs.ext4 /dev/mapper/vg01_lv01
 
-#systemctl daemon-reload
+#mkdir /mnt/data
+
+#lsblk -pf (UUID=dde8c40f-fa74-4290-8ff9-252c614e8307)
+
+#echo “UUID=dde8c40f-fa74-4290-8ff9-252c614e8307 /mnt/data ext4 defaults 0 0” >> /etc/fstab
+
 #mount -a
+
+#df -h
+
 ```
 
 
@@ -292,8 +297,31 @@ cat /etc/group
 #### The logical volume should be automatically mounted under /mnt/database at system boot time.
 
 ```javascript
-sudo -i
-groupadd -g 600 admin
-cat /etc/group
+#lsblk -pf (to check unused disks and partitions - let's say sda1 and sda2 are empty)
+#pvcreate /dev/sda1 /dev/sda2
 
+#vgcreate -s 16M datastore /dev/sda1 /dev/sda2
+
+#lvcreate -l 50 -n database datastore #mkfs.ext3 /dev/datastore/database
+#mkdir -p /mnt/database
+#lsblk -pf (to see the UUIDs) #echo 'UUID=XXX /mnt/data ext3 defaults 0 0' >> /etc/fstab (use real UUID of "database" volume from previous step instead of XXX)
+
+#systemctl daemon-reload
+#mount -a
+```
+
+#### Create a 512M partition, make it as ext4 file system, mounted automatically under /mnt/data and which take effect automatically at boot-start.
+
+```javascript
+#sudo su
+#lsblk -psf (to check for empty disk)
+#fdisk /dev/sd[] (format disk in question)
+#n (new partition)
+#p (for primary)
+#Enter (use the first sector by default) #+size 512M (to specify the size)
+#Enter
+#w (to write the changes)
+#lsblk -psf(to verify partition has been created)
+#mkfs.ext4 /dev/sd[]1 (to format the partition with ext4 file system)
+#mkdir /mnt/data (to create the mount point) #lsblk -psf (to show the UUID for the newly created file system) #echo 'UUID=XXX /mnt/data ext4 defaults 0 0' >> /etc/fstab #systemctl daemon-reload #mount -a
 ```
