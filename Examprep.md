@@ -328,7 +328,7 @@ cat /etc/group
 #mount -a
 ```
 
-####7-16 Create a 2G swap partition which take effect automatically at boot-start, and it should not affect the original swap partition
+#### 7-16 Create a 2G swap partition which take effect automatically at boot-start, and it should not affect the original swap partition
 ```javascript
 lsblk (to check partition)
 #fdisk /dev/sdb (to sda or sdb depending on the disk)
@@ -348,4 +348,11 @@ lsblk (to check partition)
 #mount -a
 #swapon -s  
 free -h #swap value must be increased by 2G
+```
+#### Change the logical volume capacity named vo from 190M to 300M. and the size of the floating range should set between 280 and 320. (This logical volume has been mounted in advance.)
+
+```
+lvdisplay (Check lv)
+lvextend -r -L +110M /dev/vg2/
+mount -a
 ```
