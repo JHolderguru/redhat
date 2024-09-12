@@ -1,4 +1,43 @@
 
+#1 - 1
+#### Configure your Host Name, IP Address, Gateway and DNS.
+#### Host name: station.domain40.example.com
+#### /etc/sysconfig/network
+#### hostname=abc.com
+#### hostname abc.com
+
+#### IP Address:172.24.40.40/24 -
+
+#### Gateway172.24.40.1 -
+
+#### DNS:172.24.40.1 -
+
+```javascript
+nmtui
+edit connection (GUI enter)
+
+edit ip address to 172.24.40.40/24
+edit Gateway to 172.24.40.1
+
+ok
+back
+
+activate connection (GUI)
+ok
+back
+
+set system hostname
+ok
+back
+
+(check)
+(host) hostname
+(ip) ifconfig
+(Gateway) route -n
+(DNS) cat /etc/resolv.conf
+
+```
+
 #62 - 14
 #### You are new System Administrator and from now you are going to handle the system and your main task is Network monitoring, Backup and Restore. But you don't know the root password. Change the root password to redhat and login in default Runlevel.
 
@@ -24,7 +63,7 @@ except Enter.
  # 5 passwd
    redhat
    redhat
- # 6 chcon system_u:object... /etc/shadow
+ # 6 chcon system_u:objectls -lZ /etc/shadow
 
  # 7 exec /sbin/init
 
@@ -351,8 +390,31 @@ free -h #swap value must be increased by 2G
 ```
 #### Change the logical volume capacity named vo from 190M to 300M. and the size of the floating range should set between 280 and 320. (This logical volume has been mounted in advance.)
 
-```
+```javascript
 lvdisplay (Check lv)
 lvextend -r -L +110M /dev/vg2/
 mount -a
+```
+
+#### Add an additional swap partition of 754 MB to your system.
+The swap partition should automatically mount when your system boots.
+Do not remove or otherwise alter any existing swap partitions on your system.
+```javascript
+fdisk -l
+fdisk -cu /dev/vda
+p n
+e or p select e
+default (first): enter
+default (last): enter n
+default(first): enter
+default(first): +754M t (1-5)
+l: 82 p
+w #reboot
+#mkswap /dev/vda5
+vim /etc/fstab
+/dev/vda5 swap swap defaults 0 0
+:wq
+mount -a
+swapon -a
+swapon -s
 ```
