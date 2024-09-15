@@ -474,6 +474,8 @@ mount /dev/datastore/database /mnt/database/
 
 mount -a
 
+systemctl reload-daemon
+
 
 
 
