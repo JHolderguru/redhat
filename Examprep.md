@@ -451,8 +451,11 @@ vgs    (check if vg is created)
 fdisk /dev/vdb
 (n - p - (enter) then Last part - +1G - t -l (list) Linux LVM - (30) - w (write and quit))
 
+partprobe
+lsblk 
+
 pvcreate /dev/vdb2
-pgs
+pvs
 
 vgcreate datastore -s 16M /dev/vdb2
 
