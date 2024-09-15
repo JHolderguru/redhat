@@ -466,7 +466,7 @@ mkfs.ext3 /dev/datastore/database
 
 df -Th
 entry into vi /etc/fstab
-"/dev/mapper/datastore-database                  ext3       defaults   0 0 "
+"/dev/mapper/datastore-database /mnt/database/               ext3       defaults   0 0 "
 
 mkdir /mnt/database
 
