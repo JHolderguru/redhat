@@ -418,3 +418,69 @@ mount -a
 swapon -a
 swapon -s
 ```
+
+SIMULATION -
+Configure autofs to automount the home directories of LDAP users as follows: host.domain11.example.com NFS-exports /home to your system.
+This filesystem contains a pre-configured home directory for the user ldapuser11 ldapuser11's home directory is host.domain11.example.com /rhome/ldapuser11 ldapuser11's home directory should be automounted locally beneath /rhome as /rhome/ldapuser11
+Home directories must be writable by their users
+ldapuser11's password is 'password'.
+
+
+```javascript
+vim /etc/auto.master.d/direct.autofs / -/etc/auto.direct vim /etc/auto.direct ldapuser11 -rw,sync,nstype=nfs4 host.domain11.example.com:/home systemctl restart autofs systemctl enable --now autofs
+```
+
+Configure your system so that it is an NTP client of server.domain11.example.com
+
+```javascript
+#system-config-date
+Note: dialog box will open in that
+Check mark Synchronize date and time over network. Remove all the NTP SERVER and click ADD and type server.domain11.example.com
+****************And then press ENTER and the press OK***************
+```
+
+#### Create a new logical volume according to the following requirements:
+The logical volume is named  database and belongs to the datastore volume group and  has a size of 50 extents.
+ Logical volumes in the #### datastore volume group should have an extent size of 16 MB.
+Format the new logical volume with a ext3 filesystem.
+The logical volume should be automatically mounted under /mnt/database at system boot time.
+
+```javascript
+
+vgs    (check if vg is created)
+fdisk /dev/vdb
+(n - p - (enter) then Last part - +1G - t -l (list) Linux LVM - (30) - w (write and quit))
+
+pvcreate /dev/vdb2
+pgs
+
+vgcreate datastore -s 16M /dev/vdb2
+
+vgs
+
+lvcreate -n database -l 50 datastore
+
+lvs
+
+mkfs.ext3 /dev/datastore/database
+
+df -Th
+entry into vi /etc/fstab
+"/dev/mapper/datastore-database                  ext3       defaults   0 0 "
+
+mkdir /mnt/database
+
+mount /dev/datastore/database /mnt/database/
+
+mount -a
+
+
+
+
+
+
+
+
+
+
+```
