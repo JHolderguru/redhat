@@ -501,6 +501,65 @@ systemctl reload-daemon
 
 
 ```
+
+#### podman questions
+#### ssh into the user1
+
+```javascript
+wget http:/podmanregistrylink.io
+
+podman login registry.access.redhat.com
+
+podman build -t imagetype -f .
+
+  ...image bilding...
+
+podman images(see image)
+
+logout
+```
+#### podman question 2
+#### create a rootless container and do volume mapping which they asked you in the question and run container as a service from the normal user account, the service must be enabled so it could start after the reboot.
+a.create a container named asc2 using the previously created image.
+b.Map the '/opt/processed' to container '/opt/outgoing'
+c.Map the '/opt/files' to container '/opt/incoming'
+d.Create systemd service service as container-asc2.service
+```javascript
+
+cd /opt/
+mkdir processed outgoing incoming files
+
+ls -l
+
+chown -R athena:athena /opt/ (user and group to change owner and grp ownershp)
+
+ssh athen@servera
+
+podman images
+   localhost/monitor       tag:latest    created:3mins ago
+
+
+podman run -d -it  --name asc2 -v /opt/processed/:/opt/outgoing/:Z -v /opt/files/:/opt/incoming/:Z localhost/monitor
+
+mkdir -p .config/systemd/user
+
+cd -p .config/systemd/user
+
+podman generate systemd --name asc2 --new --files
+ls
+     container-asc2pdf.service
+systemctl --user daemon-reload
+systemctl --user enable --now (LS)container-asc2pdf.service
+
+systemctl --user status (LS)container-asc2pdf.service
+
+loginctl enable-linger athena
+
+sytemctl --user restart (LS) container-asc2pdf.service
+```
+
+
+
 helpful resource
 
 https://www.youtube.com/watch?v=RiILNaWCMWw&t=2117s
