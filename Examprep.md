@@ -500,12 +500,8 @@ mount -a
 systemctl reload-daemon
 
 
-
-
-
-
-
-
-
-
 ```
+helpful resource
+
+https://www.youtube.com/watch?v=RiILNaWCMWw&t=2117s
+https://www.youtube.com/watch?v=6cxiC0zqBBM
