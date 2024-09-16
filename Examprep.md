@@ -242,6 +242,7 @@ Now any file or folder created in the archive will have the same owner:group per
 ```javascript
 vi /etc/chrony.conf
   server classroom.example.com iburst
+
 systemctl restart chronyd
 systemctl enable chronyd
 
@@ -421,13 +422,32 @@ swapon -s
 
 SIMULATION -
 Configure autofs to automount the home directories of LDAP users as follows: host.domain11.example.com NFS-exports /home to your system.
-This filesystem contains a pre-configured home directory for the user ldapuser11 ldapuser11's home directory is host.domain11.example.com /rhome/ldapuser11 ldapuser11's home directory should be automounted locally beneath /rhome as /rhome/ldapuser11
+
+This filesystem contains a pre-configured home directory for the user ldapuser11 ldapuser11's home directory is host.domain11.example.com:/rhome/ldapuser11
+ldapuser11's home directory should be automounted locally beneath /rhome as /rhome/ldapuser11
 Home directories must be writable by their users
 ldapuser11's password is 'password'.
 
 
 ```javascript
-vim /etc/auto.master.d/direct.autofs / -/etc/auto.direct vim /etc/auto.direct ldapuser11 -rw,sync,nstype=nfs4 host.domain11.example.com:/home systemctl restart autofs systemctl enable --now autofs
+dnf install autofs
+
+systemsctl status autofs.service
+systemsctl enable autofs.service
+
+vi /etc/auto.master
+   /rhome       /etc/auto.misc
+
+vi /etc/auto.misc
+    ldapuser11   -rw,sync,soft   host.domain11.example.com:/rhome/ldapuser11
+
+
+systemctl restart autofs.service
+systemctl enable --now autofs
+
+sudo su - ldapuser11
+pwd
+ /you should the mountfile -> /rhome/ldapuser11
 ```
 
 Configure your system so that it is an NTP client of server.domain11.example.com
@@ -452,7 +472,7 @@ fdisk /dev/vdb
 (n - p - (enter) then Last part - +1G - t -l (list) Linux LVM - (30) - w (write and quit))
 
 partprobe
-lsblk 
+lsblk
 
 pvcreate /dev/vdb2
 pvs
