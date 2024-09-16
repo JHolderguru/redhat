@@ -163,9 +163,13 @@ note:
 ```javascript
 systemctl status
 
-semanage port -l | grep 80
+semanage port -l| grep 80
+
+vi /etc/ssh/sshd_config (to find below cmd change ssh to http)
 semanage port -a -t http_port_t -p tcp 82
-semanage port -l | grep 80
+
+firewall-cmd --permanant --add-port=82/tcp
+firewall-cmd --reload
 
 systemctl restart httpd
 systemctl enable httpd
